@@ -2,17 +2,25 @@ class Controller {
     constructor () {
         this.model = new Model({
             onMemesChange: this.handleModelMemesChange,
-            onCurrentMemeIdChange: this.handleModelCurrentMemeIdChange
+            onCurrentMemeIdChange: this.handleModelCurrentMemeIdChange,
+            onTextTopChange: this.handleModelTextTopChange,
+            onTextBottomChange: this.handleModelTextBottomChange
         });
         this.viev = new Viev({
-            onMemeChange: this.handleMemeChange
+            onMemeChange: this.handleMemeChange,
+            onTextTopChange: this.handleVievTextTopChange,
+            onTextBottomChange: this.handleVievTextBottomChange
         });
         this.api = new API();
     }
     init() {
+        this.api.getMemes()
+            .then(data => {
+                const memes = data.data.memes;
+                this.model.setMemes(memes);
 
-        const memes = this.api.getMemes();
-        this.model.setMemes(memes);
+            })
+
 
     }
     handleModelMemesChange = () => {
@@ -25,11 +33,18 @@ class Controller {
     }
 
     handleModelCurrentMemeIdChange = () => {
-        const preview = {
-            ...this.model.getPreview(),
-            url: this.model.getCurrentMeme().url
-        }
-
-        this.viev.renderPreview(preview);
+        this.viev.renderPreview(this.model.getPreview());
+    }
+    handleVievTextTopChange = (text) => {
+        this.model.setTextTop(text);
+    }
+    handleVievTextBottomChange = (text) => {
+        this.model.setTextBottom(text);
+    }
+    handleModelTextTopChange = () => {
+        this.viev.renderPreview(this.model.getPreview());
+    }
+    handleModelTextBottomChange = () => {
+        this.viev.renderPreview(this.model.getPreview());
     }
 }

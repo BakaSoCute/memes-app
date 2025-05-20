@@ -1,16 +1,20 @@
 const PREVIEW_MOCK = {
     textTop: "Верхняя подпись",
-    textBott: "Нижняя подпись"
+    textBottom: "Нижняя подпись"
 }
 
 
 class Model {
-    constructor({onCurrentMemeIdChange,onMemesChange}) {
+    constructor({onCurrentMemeIdChange,onMemesChange, onTextTopChange, onTextBottomChange}) {
         this.memes = [];
         this.currentMemeId = null;
-        this.preview = PREVIEW_MOCK;
+        this.textTop = "";
+        this.textBottom = "";
         this.onMemesChange = onMemesChange;
         this.onCurrentMemeIdChange = onCurrentMemeIdChange;
+        this.onTextTopChange = onTextTopChange;
+        this.onTextBottomChange = onTextBottomChange;
+
     }
 
 
@@ -38,9 +42,23 @@ class Model {
     getCurrentMemeId() {
         return this.currentMemeId;
     }
+    setTextTop(text) {
+        this.textTop = text;
 
-    getPreview() {
-        return this.preview;
+        this.onTextTopChange();
+    }
+    setTextBottom(text) {
+        this.textBottom = text;
+
+        this.onTextBottomChange();
+    }
+
+    getPreview = () => {
+        return {
+            textTop: this.textTop,
+            textBottom: this.textBottom,
+            url: this.getCurrentMeme().url
+        }
     }
     getCurrentMeme() {
         let currentMeme = null;
