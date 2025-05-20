@@ -1,6 +1,7 @@
 class Controller {
     constructor () {
         this.model = new Model({
+            onMemesChange: this.handleModelMemesChange,
             onCurrentMemeIdChange: this.handleModelCurrentMemeIdChange
         });
         this.viev = new Viev({
@@ -12,14 +13,15 @@ class Controller {
 
         const memes = this.api.getMemes();
         this.model.setMemes(memes);
-        this.model.setCurrentMemId(memes[0].id)
 
+    }
+    handleModelMemesChange = () => {
         this.viev.renderMemesSelect(this.model.getMemes(), this.model.getCurrentMemeId());
-
+        
     }
 
     handleMemeChange = (id) => {
-    this.model.setCurrentMemId(id);        
+        this.model.setCurrentMemId(id);        
     }
 
     handleModelCurrentMemeIdChange = () => {
