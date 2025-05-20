@@ -1,9 +1,12 @@
 class Viev {
-    constructor () {
+    constructor ({onMemeChange}) {
         this.previewTopTextNode = document.getElementById("textTop");
         this.previewBottTextNode = document.getElementById("textBott");
         this.previewImgNode = document.getElementById("img");
         this.settingsSelectNode = document.getElementById("select");
+        this.onMemeChange = onMemeChange;
+
+        this.settingsSelectNode.addEventListener("change", this._handleSelectChange)
 
     }
     renderPreview(preview) {
@@ -33,5 +36,10 @@ class Viev {
            
             this.settingsSelectNode.appendChild(optionNode);
         });
+    }
+
+    _handleSelectChange = () => {
+        const id = this.settingsSelectNode.value;
+        this.onMemeChange(id);
     }
 }

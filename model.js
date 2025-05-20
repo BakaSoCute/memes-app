@@ -1,15 +1,16 @@
 const PREVIEW_MOCK = {
-    url: "https://i.imgflip.com/1g8my4.jpg",
     textTop: "Верхняя подпись",
     textBott: "Нижняя подпись"
 }
 
 
 class Model {
-    constructor() {
+    constructor({onCurrentMemeIdChange}) {
         this.memes = [];
         this.currentMemeId = null;
         this.preview = PREVIEW_MOCK;
+
+        this.onCurrentMemeIdChange = onCurrentMemeIdChange;
     }
 
 
@@ -26,6 +27,8 @@ class Model {
 
     setCurrentMemId(currentMemeId) {
         this.currentMemeId = currentMemeId;
+
+        this.onCurrentMemeIdChange();
     }
 
 
@@ -35,6 +38,15 @@ class Model {
 
     getPreview() {
         return this.preview;
+    }
+    getCurrentMeme() {
+        let currentMeme = null;
+        this.memes.forEach(meme => {
+            if (meme.id === this.getCurrentMemeId()) {
+                currentMeme = meme
+            }
+        })
+        return currentMeme;
     }
 
 } 

@@ -1,7 +1,11 @@
 class Controller {
     constructor () {
-        this.model = new Model();
-        this.viev = new Viev();
+        this.model = new Model({
+            onCurrentMemeIdChange: this.handleModelCurrentMemeIdChange
+        });
+        this.viev = new Viev({
+            onMemeChange: this.handleMemeChange
+        });
         this.api = new API();
     }
     init() {
@@ -12,8 +16,18 @@ class Controller {
 
         this.viev.renderMemesSelect(this.model.getMemes(), this.model.getCurrentMemeId());
 
-        const preview = this.model.getPreview();
+    }
 
-        this.viev.renderPreview(preview)
+    handleMemeChange = (id) => {
+    this.model.setCurrentMemId(id);        
+    }
+
+    handleModelCurrentMemeIdChange = () => {
+        const preview = {
+            ...this.model.getPreview(),
+            url: this.model.getCurrentMeme().url
+        }
+
+        this.viev.renderPreview(preview);
     }
 }
